@@ -100,4 +100,95 @@ polls/
     tests.py
     views.py
 ~~~~
+다음으로 Django에서 기본적으로 지원해주는 다음 app들을 지원해 줍니다.
+
+~~~~
+INSTALLED_APPS = [
+'django.contrib.admin', 관리자 사이트
+'django.contrib.auth',  인증 시스템
+'django.contrib.contenttypes', 컴텐츠 타입을 위한 프레임 워크
+'django.contrib.sessions',  세션 프레임워크
+'django.contrib.messages',  메세징 프레임워크
+'django.contrib.staticfiles',  정적 파일을 관리하는 프레임 워크
+]
+~~~~
+
+위의 기본적으로 지원해주는 app들은 기본적으로 하나 이상의 데이터베이스 테이블을 사용합니다. 그래서 테이블을 미리 만들어 주어야 합니다. 다음 명령을 실행해주세요
+~~~~
+python manage.py migrate
+~~~~
+migrate 명령은 INSTALLED_APPS의 설정을 탐색하여, DBMS 설정과 app에 사용되는 데이터베이스 테이블을 생성합니다. 어떤 내용이 생성됬는디 확인하고 싶다면 데이터 베이스 클라이언트로 접속하여 확인 할수 있습니다.
+
+만약 기본적으로 제공되는 app들 중 사용하기 싫은 app이 있으시다면 주석처리 해주시거나 삭제하시고 migrate명령을 해주시면 삭제된 app을 제외하고 migrate명령이 실행 될 겁니다.
+
 ***
+이제 모델을 만들어 봅시다. Django는 모델을 한곳에서 관리할 수 있도록 지원해줍니다.
+
+우리가 만드는 단순한 설문조사(poll) 앱을 위해 Question 과 Choice 라는 두개의 모델을 만들어 보겠습니다. Question 은 질문(question) 과 발행일(publication date) 을 위한 두개의 필드를 가집니다. Choice 는 선택지(choice) 와 표(vote) 계산을 위한 두개의 필드를 가집니다. 각 Choice 모델은 Question 모델과 연관(associated) 됩니다.
+
+**경로 : polls/models.py**
+
+~~~~
+from django.db import models
+
+class Question(models.Model):
+question_text = models.CharField(max_length=200)
+pub_date = models.DateTimeField('date published')
+
+
+class Choice(models.Model):
+question = models.ForeignKey(Question, on_delete=models.CASCADE)
+choice_text = models.CharField(max_length=200)
+votes = models.IntegerField(default=0)
+~~~~
+
+각 모델은 django.db.models.Model 이라는 클래스의 서브클래스로 표현됩니다.
+각 모델은 여러 개의 클래스 변수를 가지고 있으면, 각각의 클래스 변수들은 모델의 데이터베이스 필드를 나타냅니다.
+
+데이터베이스의 필드들은 Field 클래스의 인스턴스로 표현됩니다. 각 옵션들을 부여 할수 있는데 이것을 이용하여 최대길이(max_length) 지정,  default로 기본값 지정, 첫번째 인수를 전달하여 사람이 이해하기 쉬운 이름을 지정 할수도 있습니다.
+ForeignKey 를 사용한 관계설정에 대해 설명하겠습니다. 이 예제에서는 각각의 Choice 가 하나의 Question 에 관계된다는 것을 Django 에게 알려줍니다. Django 는 다-대-일(many-to-one), 다-대-다(many-to-many), 일-대-일(one-to-one) 과 같은 모든 일반 데이터베이스의 관계들를 지원합니다.
+그리고 이 필드의 이름들은 데이터 베이스에서 속성명으로 사용됩니다.
+
+CharField : 문자 필드
+DateTimeField : 날짜시간 필드
+
+app 을 현재의 project 에 포함시키기 위해서는, app 의 구성 클래스에 대한 참조를 INSTALLED_APPS 설정에 추가시켜야 합니다. 다음과 같이 코드를 작성해 주세요
+
+**경로 : mysite/settings.py**
+
+~~~~
+INSTALLED_APPS = [
+'django.contrib.admin',
+'django.contrib.auth',
+'django.contrib.contenttypes',
+'django.contrib.sessions',아
+'django.contrib.staticfiles',
+'polls',   # 이부분의 app의 이름을 추가하여 준다.
+]
+~~~~
+
+그후 다음 명령어를 실행해 주세요
+~~~~
+"python manage.py makemigrations polls"
+~~~~
+
+그러면 명령창에 이렇게 띄워질 것입니다.
+
+~~~~
+Migrations for 'polls':
+polls/migrations/0001_initial.py:
+- Create model Choice
+- Create model Question
+- Add field question to choice
+~~~~
+
+makemigrations 을 실행시킴으로서, 당신이 모델을 변경시킨 사실과(이 경우에는 새로운 모델을 만들었습니다) 이 변경사항을 migration 으로 저장시키고 싶다는 것을 Django 에게 알려줍니다. migrations는 Django가 모델의 변경사항을 저장하는 방법으로 파일로 존재합니다.
+polls/migrations/0001_initial.py 파일을 보면 새롭게 저장된 모델에 대한 migrations를 볼수 있습니다. 파일로 볼수 있고 명령어를 치지 않고 그냥 그 파일에서 수동으로 수정할 수도 있습니다.
+
+***
+이제 다음 명령으로 데이터베이스에 모델과 관련된 테이블을 생성해봅시다.
+~~~~
+python manage.py migrate
+~~~~
+migrate는 아직 적용되지 않은 migration들을 실행합니다. migration은 매우 기능이 강력하여 project를 개발할때 직접 데이터베이스에 손대지 않고도 모델을 변경하게 해줍니다.
+
