@@ -323,3 +323,56 @@ admin.site.register(Question)
 이제 관리자 페이지에서 polls app을 관리 할수 있게됩니다.
 
 <img src="https://django-document-korean.readthedocs.io/ko/master/_images/admin03t.png" align=middle>
+
+polls 어플리케이션에 관리자자가 공개인터페이스인 view를 추가해보겠습니다.
+
+view는 Django 어플리케이션이 일반적으로 특정 기능과 템플릿을 제공하는 웹페이지의 한 종류입니다.
+
+우리가 만드는 poll 어플리케이션에서 다음과 같은 네 개의 view를 만들어 보겠습니다.
+
+최근의 질문들을 표시하는 페이지
+질문 내용과, 투표할 수 있는 서식을 표시하는 페이지
+특정 질문에 대한 결과를 표시하는 페이지
+특정 질문에 대해 특정 선택을 할 수 있는 투표 기능을 제공하는 페이지
+
+Django에서는, 웹페이지와 기타 내용들이 view에 의해 제공됩니다. 각 view는 간단한 Python함수를 사용하여 작성됩니다. Django는 요청받은 URL에 따라 view를 선택합니다.
+***
+그럼 view를 작성해봅시다.
+
+**경로 : polls/views.py**
+
+~~~~
+def detail(request, question_id):
+return HttpResponse("You're looking at question %s." % question_id)
+
+def results(request, question_id):
+response = "You're looking at the results of question %s."
+return HttpResponse(response % question_id)
+
+def vote(request, question_id):
+return HttpResponse("You're voting on question %s." % question_id)
+~~~~
+
+urls.py 에 새로 작성된 view들을 연결하기 위해 다음과 같이 url()함수를 추가합니다.
+
+**경로 : polls/urls.py**
+
+from django.conf.urls import url
+
+~~~~
+from . import views
+
+urlpatterns = [
+# ex: /polls/
+url(r'^$', views.index, name='index'),
+# ex: /polls/5/
+url(r'^(?P<question_id>[0-9]+)/$', views.detail, name='detail'),
+# ex: /polls/5/results/
+url(r'^(?P<question_id>[0-9]+)/results/$', views.results, name='results'),
+# ex: /polls/5/vote/
+url(r'^(?P<question_id>[0-9]+)/vote/$', views.vote, name='vote'),
+]
+~~~~
+
+이제 웹 브라우저 주소창에 localhost:8000/polls/34를 입력하게 되면 detail()함수를 호출하여 url에 입력된 ID(34)를 출력할 것입니다.
+
