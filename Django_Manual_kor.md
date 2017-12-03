@@ -100,6 +100,90 @@ polls/
     tests.py
     views.py
 ~~~~
+첫 번째 뷰를 작성해볼까요.
+
+**경로 : polls/view.py**
+
+다음 코드를 작성해봅시다.
+
+~~~~
+from django.http import HttpResponse
+
+
+def index(request):
+    return HttpResponse("Hello, world. You're at the polls index.")
+~~~~
+
+Django에서 가장 간단한 형태의 view입니다. view를 호출하려면 이와 연결된 URL이 있어야 하는데, 이를 URLconf가 사용되는데 polls 디렉토리에서 URLconf를 생성하려면, urls.py라는 파일을 생성해야 합니다. 
+
+**경로 : polls/urls.py**
+
+~~~~
+from django.conf.urls import url
+
+from . import views
+
+urlpatterns = [
+    url(r'^$', views.index, name='index'),
+]
+~~~~
+
+다음단계에서는 project 최상단의 URLconf에서 polls.urls 모듈을 바라보게 설정합니다.
+mysite/urls.py 파일을 열고, django.conf.urls.include 를 추가합니다. 그리고 다음과 같이 코드를 추가해주세요. 
+
+**경로 : mysite/urls.py**
+
+~~~~
+from django.conf.urls import include, url
+from django.contrib import admin
+
+urlpatterns = [
+    url(r'^polls/', include('polls.urls')),
+    url(r'^admin/', admin.site.urls),
+]
+~~~~
+
+include() 함수는 URLconf를 참조할 수 있도록 도와줍니다. 위의 코드는 쉽게 말하면 project안에 app의 urls.py에 접근할 수 있도록 도와주는 역활을 합니다.
+
+***
+데이터베이스를 설정해봅시다. 
+Django의 기본적인 SQLite로 사용하도록 구성되어 있습니다. 데이터베이스를 처음 경험한다면 그냥 그대로 사용하시고 나는 다른 데이터베이스를 사용하고 싶으시다면 별도로 DBMS를 설치하시고 아래와 같이 코드를 작성해주시면 됩니다.
+
+~~~~
+'django.db.backends.sqlite3',       SQLite
+'django.db.backends.postgresql',    PostgreSQL
+'django.db.backends.mysql',         MySQL
+'django.db.backends.oracle'.        Oracle
+~~~~
+
+**경로 :  mysite/settings.py**
+
+기본 코드
+~~~~
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+
+~~~~
+
+DBMS를 PostgreSQL로 바꾸고 싶다면 아래와 같이 코드를 작성해주세요
+
+~~~~
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': '데이터베이스의 이름',
+        'USER': '데이터베이스 계정',
+        'PASSWORD': '계정 비밀번호',
+        'HOST': '127.0.0.1',
+        'PORT': '',
+    }
+}
+~~~~
+
 다음으로 Django에서 기본적으로 지원해주는 다음 app들을 지원해 줍니다.
 
 ~~~~
@@ -192,3 +276,50 @@ python manage.py migrate
 ~~~~
 migrate는 아직 적용되지 않은 migration들을 실행합니다. migration은 매우 기능이 강력하여 project를 개발할때 직접 데이터베이스에 손대지 않고도 모델을 변경하게 해줍니다.
 
+***
+
+## 관리자 생성하기
+
+기본적으로 Django에서는 관리자 사이트를 활성화 되어있습니다.
+그러므로 일단 관리자 사이트를 사용할 수 있는 사용자를 생성해 봅시다. 다음 명령어를 실행 합니다.
+~~~~
+python manage.py createsuperuser
+~~~~
+
+~~~~
+Username: "유저 ID"
+Email address: "Email 주소""
+Password: "비밀번호"
+~~~~
+
+명령창위에서 이것을 작성해 줍니다. 그리고 서버를 켜기 위해 다음 명령을 실행합니다.
+~~~~
+python manage.py runserver
+~~~~
+그리고 웹 브라우져 주소창에  http://127.0.0.1:8000/admin/ 또는 localhost:8000/으로 들어갑니다. 
+
+그러면 로그인 화면이 보입니다.
+
+<img src="https://django-document-korean.readthedocs.io/ko/master/_images/admin01.png" align=middle>
+
+위에서 생성한 계정으로 로그인 해서 들어가게 되면 다음 화면이 보일것입니다.
+
+<img src="https://django-document-korean.readthedocs.io/ko/master/_images/admin02.png" align=middle>
+
+
+polls app 관리자 페이지에 보이지 않네요.
+ 새로 생성한 app을 관리자 페이지에서 보려면 다음 코드를 작성하세요.
+
+**경로 : polls/admin.py**
+
+~~~~
+from django.contrib import admin
+
+from .models import Question
+
+admin.site.register(Question)
+~~~~
+
+이제 관리자 페이지에서 polls app을 관리 할수 있게됩니다.
+
+<img src="https://django-document-korean.readthedocs.io/ko/master/_images/admin03t.png" align=middle>
