@@ -488,4 +488,37 @@ polls/index.html template에 링크를 적으면, 다음과 같은 하드코딩�
 <li><a href="{% url 'detail' question.id %}">{{ question.question_text }}</a></li>
 ~~~~
 
-이렇게 코드르 작성하게 되면 url을 바꾸게 될 때 template에서 코드 수정을 하는게 아니라 polls.urls.py에서 수정하시면 됩니다. 
+이렇게 코드르 작성하게 되면 url을 바꾸게 될 때 template에서 코드 수정을 하는게 아니라 polls.urls.py에서 수정하시면 됩니다.
+
+한가지 더 맨 처음 말했듯이 하나의 project에는 여러 개의 app이 들어가지만 url의 이름을 같게 만들어야 할 상황이 있을수도 있습니다. 그럴떈 URLconf에 namespace를 추가해주는 것입니다. 아래 코드를 작성해 주세요
+
+**경로 : polls/urls.py**
+
+~~~~
+from django.conf.urls import url
+
+from . import views
+
+app_name = 'polls'
+urlpatterns = [
+url(r'^$', views.index, name='index'),
+url(r'^(?P<question_id>[0-9]+)/$', views.detail, name='detail'),
+url(r'^(?P<question_id>[0-9]+)/results/$', views.results, name='results'),
+url(r'^(?P<question_id>[0-9]+)/vote/$', views.vote, name='vote'),
+]
+~~~~
+
+이렇게 하면 기존의 template의 내용을
+
+**경로 : polls/templates/polls/index.html**
+
+~~~~
+<li><a href="{% url 'detail' question.id %}">{{ question.question_text }}</a></li>
+~~~~
+
+아래와 같이 수정해주시면 됩니다.
+
+~~~~
+<li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+~~~~
+
