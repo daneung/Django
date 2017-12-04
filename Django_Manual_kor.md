@@ -454,3 +454,35 @@ return render(request, 'polls/index.html', context)
 모든 뷰에서 이 방식을 사용한다면 굳이 loader 와 HttpResponse 를 import 하지 않아도 됩니다.
 render() 함수는 첫번째 인수에서 request 객체를 받고 두번쨰 인수로 template의 이름을 받고 세번째 인수로 context 객체를 선택적으로 인수를 받습니다. context는 템플릿에 HttpResponse 객체로 넘어갑니다.
 
+## template 사용하기
+
+위의 코드에서 detail()함수로 넘긴 context 변수 question이 polls/detail.html에서 어떻게 보여지는지 아래 코드롤 작성해봅시다.
+
+**경로 : polls/templates/polls/detail.html**
+
+~~~~
+<h1>{{ question.question_text }}</h1>
+<ul>
+{% for choice in question.choice_set.all %}
+    <li>{{ choice.choice_text }}</li>
+{% endfor %}
+</ul>
+~~~~
+
+template 시스템은 변수의 속성에 접근하기 위해 점-탐색(dot-lookup) 문법을 사용합니다. 
+{{ question.question_text }}을 보면, Django는 먼저 questions 객체에 대해 dictionary로 탐색한후 실패르 하면 속성 값을 탑색하게 됩니다. {% for %} 문에서 메소드 호출이 일어나고 Python코드가 동작합니다.
+
+## template에서 하드코딩된 URL 제거하기
+
+polls/index.html template에 링크를 적으면, 다음과 같은 하드코딩이 나오게 됩니다.
+~~~~
+<li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
+~~~~
+
+이러한 방법은 수많은 template 을 가진 project의 URL을 바꾸는게 어려울 일이 되버립니다. 그러므로 우리는 polls.urls 모듈의 url()함수를 통하여 이름을 정의했습니다. 그것을 이용하여 다시 코드를 작성해봅시다.
+
+~~~~
+<li><a href="{% url 'detail' question.id %}">{{ question.question_text }}</a></li>
+~~~~
+
+이렇게 코드르 작성하게 되면 url을 바꾸게 될 때 template에서 코드 수정을 하는게 아니라 polls.urls.py에서 수정하시면 됩니다. 
