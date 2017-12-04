@@ -376,3 +376,39 @@ url(r'^(?P<question_id>[0-9]+)/vote/$', views.vote, name='vote'),
 
 이제 웹 브라우저 주소창에 localhost:8000/polls/34를 입력하게 되면 detail()함수를 호출하여 url에 입력된 ID(34)를 출력할 것입니다.
 
+view 는 HttpResponse 객체를 반환하거나 Http404같은 에러를 발생시킵니다. 또 데이터베이스의 레코드를 읽어 올수도 있습니다. 이번에는 데이터베이스를 다루는 방법을 해봅시다. 아래와 같이 코드를 작성해 주세요
+
+**경로 : polls/views.py**
+
+~~~~
+from django.http import HttpResponse
+
+from .models import Question
+
+
+def index(request):
+    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    output = ', '.join([q.question_text for q in latest_question_list])
+    return HttpResponse(output)
+~~~~
+
+그런데 이 뷰에는 문제가 있습니다. 바로 디자인에 되어있지 않다는 점입니다. 페이지를 디자인하고 싶다면  Python코드로부터 디자인을 독립시키도록 하는 Django의 템플릿 시스템을 사용할 것입니다. 
+
+일단 polls 디렉토리에 templates 라는 디렉토리를 만듭니다. Django는 이 디렉토리 안에서 템플릿을 찾게 될 것입니다. project의 템플릿 설정에는 Django가 어떻게 템플릿을 불러오고 렌더링 할 것인지 를 서술합니다. 기본적으로 Django는 templates 디렉토리를 탐색하게 됩니다.
+templates 디렉토리 안에 app과 이름이 같은 디렉토리를 만들어 봅시다. 그리고 그안에 html파일을 만들어 아래 코드를 작성합니다.
+
+**경로 : polls/templates/polls/index.html**
+
+~~~~
+{% if latest_question_list %}
+    <ul>
+    {% for question in latest_question_list %}
+        <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+~~~~
+
+Django 에서는 {%%}에는 조건문을 {{}}에는 변수를 출력을 할수 있도록 도와줍니다.
