@@ -6,7 +6,8 @@ Django는 파이썬으로 작성된 **오프소스 웹 어플리케이션 프레
 이러한 것을 해소하기 위해서는 웹과 데이터베이스 미들웨어를 사용하면 되지만, 현재 우리는 더욱 똑똑한 오픈 소스가 있습니다.
 장고의 주된 목표는 고도의 데이터베이스 기반 웹사이트 작성에 있어서 수고를 더는 것입니다.
 ***
-
+## 목 차
+***
 ## 시작하기에 앞서...
 Django는 **파이썬**으로 사용되는 오픈소스입니다.
 따라서 여러분들이 이 메뉴얼을 보고 학습을 하기전에 파이썬에 대한 지식을 모르시는 분들은 공부를 하고 읽으시면 이해하시는데 훨씬 수월할 것 입니다.
@@ -14,9 +15,9 @@ Django는 **파이썬**으로 사용되는 오픈소스입니다.
 ## Django 시작하기
 Django project 를 구성하는 코드를 자동 생성해야 하는데, 이 과정에서 데이터베이스 설정, Django 위한 옵션들, 어플리케이션을 위한 설정들과 같은 Django 인스턴스를 구성하는 수많은 설정들이 생성되기 때문입니다.
 우선 커맨드라인에서 코드를 저장할 디렉토리로 이동한 후 다음 명령어를 실행합니다.
-
-"django-admin startproject mysite"
-
+~~~~
+django-admin startproject mysite
+~~~~
 Python 이나 Django 에서 사용중인 이름은 피해야 합니다. 특히, django (Django 그 자체와 충돌이 일어납니다) 나, test (Python 패키지의 이름중 하나입니다) 같은 이름은 피해야 한다는 의미입니다.
 
 ***
@@ -47,9 +48,9 @@ manage.py
 
 ***
 당신의 Django project 가 제대로 동작하는지 확인해 봅시다. mysite 디렉토리로 이동하고, 다음 명령어를 실행하십시오.
-
-"python manage.py runserver"
-
+~~~~
+python manage.py runserver
+~~~~
 제대로 실행 됬을떄 커맨드라인의 출력
 
 ~~~~
@@ -70,21 +71,21 @@ Quit the server with CONTROL-C.
 “Welcome to Django”라는 텍스트가 띄워진 페이지를 볼 수 있습니다.
 
 기본적으로 runserver 명령으로 내부 IP의 8000번 포트로 개발 서버를 띄우지만 포트를 변경 하고 싶으면 다음 명령어를 입력합니다. 만약 포트번호를 8080으로 바꾸고 싶으면
-
-"python manage.py runserver 8080"
-
+~~~~
+python manage.py runserver 8080
+~~~~
 그리고 만약 서버 IP를 바꾸고 싶다면, 포트와 함께 전달해주면 됩니다. 네트워크 상의 다른 컴퓨터에게 내 작업물을 보여 줄때 유용합니다. 다음 명령어를 입력하시면 됩니다.
-
-"python manage.py runserver 0.0.0.0:8000"
-
+~~~~
+python manage.py runserver 0.0.0.0:8000
+~~~~
 이제 작업을 시작하기 위한 환경(project)이 설치되었습니다. Django는 app의 기본 디렉토리 구조를 자동으로 생성할수 있는 도구를 제공합니다.
 
 그렇다면 project와 app의 차이가 무엇일까요? app은 특정한 기능을 수행하는 웹 어플리케이션을 말합니다. proejct는 이런 특정 웹사이트를 위한 app들과 설정들을 합한것입니다. 그말은 project는 여러 개의 app을 포함 할수 있습니다.
 
 그렇다면 이제 app을 생성해 봅시다. 간단한 설문조사 app을 만들어 봅시다. app을 생성하기 위해서는 manage.py가 존재하는 디렉토리에서 다음 명령어를 입력합니다. 
-
-"python manage.py startapp polls"
-
+~~~~
+python manage.py startapp polls
+~~~~
 polls라는 디렉토리가 생겼습니다
 
 **최초의 소스 트리**
@@ -412,8 +413,8 @@ templates 디렉토리 안에 app과 이름이 같은 디렉토리를 만들어 
 ~~~~
 
 Django 에서는 {%%}에는 조건문을 {{}}에는 변수를 출력을 할수 있도록 도와줍니다.
-
-이제 이 템플릿을 페이지로 띄우기 위해 polls/views.py함수를 수정해봅시다. 아래 코드와 같이 수정해주세요
+이제 이 템플릿을 페이지로 띄우기 위해 polls/views.py함수를 수정해봅시다.
+아래 코드와 같이 수정해주세요.
 
 **경로 : polls/views.py**
 
@@ -434,8 +435,8 @@ return HttpResponse(template.render(context, request))
 ~~~~
 
 이 코드는 polls/index.html을 불러온 후, Python의 딕셔너리 형태로 context를 전달합니다.
-
-하지만 더 간단히 표현할 수 있는 방법이 있습니다. 다음과 같이 코드를 수정해 주세요.
+하지만 더 간단히 표현할 수 있는 방법이 있습니다.
+다음과 같이 코드를 수정해 주세요.
 
 **경로 : polls/views.py**
 
@@ -452,7 +453,7 @@ return render(request, 'polls/index.html', context)
 ~~~~
 
 모든 뷰에서 이 방식을 사용한다면 굳이 loader 와 HttpResponse 를 import 하지 않아도 됩니다.
-render() 함수는 첫번째 인수에서 request 객체를 받고 두번쨰 인수로 template의 이름을 받고 세번째 인수로 context 객체를 선택적으로 인수를 받습니다. context는 템플릿에 HttpResponse 객체로 넘어갑니다.
+render() 함수는 첫번째 인수에서 request 객체를 받고 두번째 인수로 template의 이름을 받고 세번째 인수로 context 객체를 선택적으로 인수를 받습니다. context는 템플릿에 HttpResponse 객체로 넘어갑니다.
 
 ## template 사용하기
 
@@ -470,7 +471,7 @@ render() 함수는 첫번째 인수에서 request 객체를 받고 두번쨰 인
 ~~~~
 
 template 시스템은 변수의 속성에 접근하기 위해 점-탐색(dot-lookup) 문법을 사용합니다. 
-{{ question.question_text }}을 보면, Django는 먼저 questions 객체에 대해 dictionary로 탐색한후 실패르 하면 속성 값을 탑색하게 됩니다. {% for %} 문에서 메소드 호출이 일어나고 Python코드가 동작합니다.
+{{ question.question_text }}을 보면, Django는 먼저 questions 객체에 대해 dictionary로 탐색한 후 실패를 하면 속성 값을 탐색하게 됩니다. {% for %} 문에서 메소드 호출이 일어나고 Python코드가 동작합니다.
 
 ## template에서 하드코딩된 URL 제거하기
 
@@ -479,7 +480,9 @@ polls/index.html template에 링크를 적으면, 다음과 같은 하드코딩�
 <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
 ~~~~
 
-이러한 방법은 수많은 template 을 가진 project의 URL을 바꾸는게 어려울 일이 되버립니다. 그러므로 우리는 polls.urls 모듈의 url()함수를 통하여 이름을 정의했습니다. 그것을 이용하여 다시 코드를 작성해봅시다.
+이러한 방법은 수많은 template 을 가진 project의 URL을 바꾸는게 어려운 일이 되버립니다. 
+그러므로 우리는 polls.urls 모듈의 url()함수를 통하여 이름을 정의했습니다.
+그것을 이용하여 다시 코드를 작성해봅시다.
 
 ~~~~
 <li><a href="{% url 'detail' question.id %}">{{ question.question_text }}</a></li>
