@@ -412,3 +412,45 @@ templates 디렉토리 안에 app과 이름이 같은 디렉토리를 만들어 
 ~~~~
 
 Django 에서는 {%%}에는 조건문을 {{}}에는 변수를 출력을 할수 있도록 도와줍니다.
+
+이제 이 템플릿을 페이지로 띄우기 위해 polls/views.py함수를 수정해봅시다. 아래 코드와 같이 수정해주세요
+
+**경로 : polls/views.py**
+
+~~~~
+from django.http import HttpResponse
+from django.template import loader
+
+from .models import Question
+
+
+def index(request):
+latest_question_list = Question.objects.order_by('-pub_date')[:5]
+template = loader.get_template('polls/index.html')
+context = {
+'latest_question_list': latest_question_list,
+}
+return HttpResponse(template.render(context, request))
+~~~~
+
+이 코드는 polls/index.html을 불러온 후, Python의 딕셔너리 형태로 context를 전달합니다.
+
+하지만 더 간단히 표현할 수 있는 방법이 있습니다. 다음과 같이 코드를 수정해 주세요.
+
+**경로 : polls/views.py**
+
+~~~~
+from django.shortcuts import render
+
+from .models import Question
+
+
+def index(request):
+latest_question_list = Question.objects.order_by('-pub_date')[:5]
+context = {'latest_question_list': latest_question_list}
+return render(request, 'polls/index.html', context)
+~~~~
+
+모든 뷰에서 이 방식을 사용한다면 굳이 loader 와 HttpResponse 를 import 하지 않아도 됩니다.
+render() 함수는 첫번째 인수에서 request 객체를 받고 두번쨰 인수로 template의 이름을 받고 세번째 인수로 context 객체를 선택적으로 인수를 받습니다. context는 템플릿에 HttpResponse 객체로 넘어갑니다.
+
