@@ -521,4 +521,31 @@ url(r'^(?P<question_id>[0-9]+)/vote/$', views.vote, name='vote'),
 ~~~~
 <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
 ~~~~
+그럼 간단한 폼을 만들어 봅시다.
+polls/detail.html 폼을 아래 처럼 HTML 요소인 <form>태그를 추가 해봅시다. 아래 코드를 수정해주세요.
+
+**경로 : polls/templates/polls/detail.html**
+
+~~~~
+<h1>{{ question.question_text }}</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'polls:vote' question.id %}" method="post">
+{% csrf_token %}
+{% for choice in question.choice_set.all %}
+<input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
+<label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
+{% endfor %}
+<input type="submit" value="Vote" />
+</form>
+~~~~
+
+위의 템플릿은 각 질문 선택 항목에 대한 라디오 버튼을 표시합니다. 각 라디오 버튼의 value 는 연관된 질문 선택 항목의 ID입니다. 각 라디오 버튼의 name 은 "choice"입니다. 즉, 누군가가 라디오 버튼 중 하나를 선택하여 폼을 제출하면, POST 데이터 인 choice=#을 보낼 것입니다. 여기서 #은 선택한 항목의 ID입니다. 이것은 HTML 폼의 기본 개념입니다.
+
+폼의 action을 {% url 'polls:vote' question.id %}로 설정하고, method="post" 로 설정하였습니다. 이 폼을 전송하는 행위는 서버측 자료를 변경할 것이므로, method="post" (method="get" 와 반대로) 를 사용하는 것은 매우 중요합니다. 서버 측 자료를 변경하는 폼을 작성할 때마다, method="post" 를 사용하세요. 이 팁은 Django에만 국한되지 않습니다.
+이것은 웹개발시의 권장사항 입니다.
+forloop.counter 는 for 태그가 반복을 한 횟수를 나타냅니다.
+
+우리는 POST 폼(자료를 수정하는 효과를 가진)을 만들고 있으므로, 사이트 간 요청 위조 (Cross Site Request Forgeries)에 대해 고민해야합니다. 고맙게도, Django는 사이트 간 요청 위조(CSRF)에 대항하기위한 사용하기 쉬운 시스템을 가지고 있기 때문에, 너무 심각하게 고민할 필요가 없습니다. 간단히 말하면, 내부 URL들을 향하는 모든 POST 폼에 템플릿 태그 {% csrf_token %}를 사용하면됩니다.
 
