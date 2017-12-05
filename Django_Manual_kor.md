@@ -549,3 +549,38 @@ forloop.counter 는 for 태그가 반복을 한 횟수를 나타냅니다.
 
 우리는 POST 폼(자료를 수정하는 효과를 가진)을 만들고 있으므로, 사이트 간 요청 위조 (Cross Site Request Forgeries)에 대해 고민해야합니다. 고맙게도, Django는 사이트 간 요청 위조(CSRF)에 대항하기위한 사용하기 쉬운 시스템을 가지고 있기 때문에, 너무 심각하게 고민할 필요가 없습니다. 간단히 말하면, 내부 URL들을 향하는 모든 POST 폼에 템플릿 태그 {% csrf_token %}를 사용하면됩니다.
 
+그럼 이제 부터는 입력받은 데이터를 처리하고 그 데이터를 이용하는 view를 작성해보겠습니다.
+아래 코드를 작성해 주십시오.
+
+**경로 : polls/views.py**
+
+~~~~
+from django.shortcuts import render
+from django.http import HttpResponseRedirect, HttpResponse
+from django.urls import reverse
+
+from .models import Choice, Question
+
+# ...
+
+def vote(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    try:
+        selected_choice = question.choice_set.get(pk=request.POST['choice'])
+    except (KeyError, Choice.DoesNotExist):
+        return render(request, 'polls/detail.html', {
+            'question': question,
+            'error_message': "You didn't select a choice.",
+        })
+    else:
+        selected_choice.votes += 1
+        selected_choice.save()
+        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+~~~~
+
+request.POST 는 키로 전송된 자료에 접근할 수 있도록 해주는 사전과 같은 객체입니다. 
+이 경우, request.POST['choice'] 는 선택된 설문의 ID가 "choice"인 값을 문자열로 반환합니다. request.POST 의 값은 항상 문자열들입니다.
+
+설문지의 수가 증가한 이후에, 코드는 일반 HttpResponse 가 아닌 HttpResponseRedirect 를 반환하고, HttpResponseRedirect 는 하나의 인수를 받습니다: 그 인수는 사용자가 재전송될 URL 입니다. (이 경우에 우리가 URL을 어떻게 구성하는지 다음 항목을 보세요).
+
+위의 파이썬 주석이 지적했듯이, POST 데이터를 성공적으로 처리 한 후에는 항상 HttpResponseRedirect 를 반환해야합니다. 이 팁은 Django에만 국한되는것이 아닌 웹개발의 권장사항입니다.
