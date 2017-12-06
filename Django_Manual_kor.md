@@ -584,3 +584,31 @@ request.POST 는 키로 전송된 자료에 접근할 수 있도록 해주는 �
 설문지의 수가 증가한 이후에, 코드는 일반 HttpResponse 가 아닌 HttpResponseRedirect 를 반환하고, HttpResponseRedirect 는 하나의 인수를 받습니다: 그 인수는 사용자가 재전송될 URL 입니다. (이 경우에 우리가 URL을 어떻게 구성하는지 다음 항목을 보세요).
 
 위의 파이썬 주석이 지적했듯이, POST 데이터를 성공적으로 처리 한 후에는 항상 HttpResponseRedirect 를 반환해야합니다. 이 팁은 Django에만 국한되는것이 아닌 웹개발의 권장사항입니다.
+
+vote() 뷰는 results 페이지를 리다이렉트합니다. 그 뷰를 작성해봅시다. 
+
+**경로 : polls/views.py**
+~~~~
+from django.shortcuts import get_object_or_404, render
+
+def results(request, question_id):
+    question = Question.obejcts.get(pk=question_id)
+    return render(request, 'polls/results.html', {'question': question})
+~~~~
+
+이제 이걸을 출력할 template를 만듭니다.
+
+경로 : polls/templates/polls/results.html
+
+~~~~
+<h1>{{ question.question_text }}</h1>
+
+<ul>
+{% for choice in question.choice_set.all %}
+    <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+{% endfor %}
+</ul>
+
+<a href="{% url 'polls:detail' question.id %}">Vote again?</a>
+~~~~
+이제 사이트에서 투표를 하면 값이 변경되는 것을 확인 할 수 있습니다.
