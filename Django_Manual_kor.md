@@ -612,3 +612,86 @@ def results(request, question_id):
 <a href="{% url 'polls:detail' question.id %}">Vote again?</a>
 ~~~~
 이제 사이트에서 투표를 하면 값이 변경되는 것을 확인 할 수 있습니다.
+
+***
+## 제네릭 뷰 사용
+제네릭 뷰를 사용해 봅시다.
+
+지금까지 만들었던 뷰들은 매우 간단한 뷰들입니다. 그리고 중복이 되는 부분이 있습니다.
+이러한 뷰는 URL에서 전달 된 매개 변수에 따라 데이터베이스에서 데이터를 가져 오는 것과 템플릿을 로드하고 렌더링 된 템플릿을 리턴하는 기본 웹 개발의 일반적인 경우를 나타냅니다. Django는 이런 매우 일반적인 경우를 위해 “제너릭 뷰”시스템이라는 지름길을 제공합니다.
+
+제내릭 뷰는 일반적으로 나오는 패턴을 추상화하여 앱을 작성하기 위해 중복된 코드를 작성하지 않아도 됩니다.
+우리는 설문조사 app을 제네릭 뷰 시스템을 사용하도록 코드를 수정할 것입니다. 그러기 위해선 몇 단계의 과정을 거쳐야 합니다. 
+
+1. URLconf를 변환하십시오.
+
+2. 불필요한 뷰 중 일부를 삭제하십시오.
+
+3. Django의 제너릭 뷰를 기반으로 새로운 뷰를 도입하십시오.
+
+먼저 URLconf를 수정합니다. 다음과 같이 코드를 수정해주세요
+
+**경로 : polls/urls.py**
+
+~~~~
+from django.conf.urls import url
+
+from . import views
+
+app_name = 'polls'
+urlpatterns = [
+    url(r'^$', views.IndexView.as_view(), name='index'),
+    url(r'^(?P<pk>[0-9]+)/$', views.DetailView.as_view(), name='detail'),
+    url(r'^(?P<pk>[0-9]+)/results/$', views.ResultsView.as_view(), name='results'),
+    url(r'^(?P<question_id>[0-9]+)/vote/$', views.vote, name='vote'),
+]
+~~~~
+
+두 번째와 세 번째 패턴의 정규식에서 일치하는 패턴의 이름이 <question_id>에서 <pk>로 변경되었습니다.
+
+그리고 index, detail, results 뷰를 제거하고 Django 제네릭 뷰를 대신 사용하겠습니다.
+다음과 같이 코드를 수정해주세요.
+
+**경로 : polls/views.py**
+
+~~~~
+from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.views import generic
+
+from .models import Choice, Question
+
+
+class IndexView(generic.ListView):
+    template_name = 'polls/index.html'
+    context_object_name = 'latest_question_list'
+
+    def get_queryset(self):
+        """Return the last five published questions."""
+        return Question.objects.order_by('-pub_date')[:5]
+
+
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = 'polls/detail.html'
+
+
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = 'polls/results.html'
+
+
+def vote(request, question_id):
+    ... # 변경할 필요 없습니다.
+
+~~~~
+
+DetailView 제너릭 뷰는 URL에서 캡쳐 된 기본 키 값이”pk”\ 라고 기대하기 때문에 question_id를 제너릭 뷰를 위해 pk로 변경합니다.
+
+기본적으로 DetailView 제너릭 뷰는 <app name>/<model name>_detail.html 템플릿을 사용합니다. 우리의 경우에는 **polls/question_detail.html**템플릿을 사용할 것입니다. template_name 속성은 Django에게 자동 생성 된 기본 템플릿 이름 대신에 특정 템플릿 이름을 사용하도록 알려주기 위해 사용됩니다. results리스트 뷰에 대해서 template_name을 지정합니다 - 결과 뷰와 상세 뷰가 렌더링 될 때 서로 다른 모습을 갖도록합니다. 이들이 둘다 동일한 DetailView를 사용하고 있더라도 말이지요.
+
+마찬가지로, ListView 제네릭 뷰는 <app name>/<model name>_list.html 템플릿을 기본으로 사용합니다; 이미 있는 **polls/index.html** 템플릿을 사용하기 위해 ListView 에 template_name 를 전달했습니다.
+
+코드 수정 전 템플릿에서는  question 및 latest_question_list context 변수가 포함된 context가 값으로 넘겨와 사용되었지만 DetailView의 경우 question 변수가 자동으로 값으로 넘어옵니다. Django 모델을 사용하기 때문에 Django는 context의 이름을 결정할 수 있습니다. 
+ListView의 경우 자동 생성 된 컨텍스트 변수는 question_list 입니다. 이것을 바꿔서 사용하려면 context_object_name 속성을 제공하고, 대신에 latest_question_list를 사용하도록 지정하십시오.
