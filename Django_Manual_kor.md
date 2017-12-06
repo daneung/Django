@@ -1,5 +1,9 @@
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Django_logo.svg/225px-Django_logo.svg.png" align=right>  
+  
 # **Django, 나도 사용할 수 있다!**
----
+[장고 공식 홈페이지](https://www.djangoproject.com "장고 공식 홈페이지 바로가기")
+
+***
 ## Django의 개요
 Django는 파이썬으로 작성된 **오픈소스 웹 어플리케이션 프레임워크**입니다.  
 일반적으로 웹 브라우저 또는 웹 서버는 데이터베이스에서의 데이터 연결 및 판독을 하지 못합니다.  
@@ -12,6 +16,8 @@ Django는 파이썬으로 작성된 **오픈소스 웹 어플리케이션 프레
 2. Django 시작하기
 
 3. 데이터베이스 설정
+
+4. 모델 만들기
 ***
 ## 1. 시작하기에 앞서...
 Django는 **파이썬**으로 사용되는 오픈소스입니다.  
