@@ -1,13 +1,13 @@
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Django_logo.svg/225px-Django_logo.svg.png" align=right>  
-  
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Django_logo.svg/225px-Django_logo.svg.png" align=right>
+
 # **Django, 나도 사용할 수 있다!**
 [장고 공식 홈페이지](https://www.djangoproject.com "장고 공식 홈페이지 바로가기")
 
 ***
 ## Django의 개요
-Django는 파이썬으로 작성된 **오픈소스 웹 어플리케이션 프레임워크**입니다.  
-일반적으로 웹 브라우저 또는 웹 서버는 데이터베이스에서의 데이터 연결 및 판독을 하지 못합니다.  
-이러한 것을 해소하기 위해서는 웹과 데이터베이스 미들웨어를 사용하면 되지만, 현재 우리는 더욱 똑똑한 오픈 소스가 있습니다.  
+Django는 파이썬으로 작성된 **오픈소스 웹 어플리케이션 프레임워크**입니다.
+일반적으로 웹 브라우저 또는 웹 서버는 데이터베이스에서의 데이터 연결 및 판독을 하지 못합니다.
+이러한 것을 해소하기 위해서는 웹과 데이터베이스 미들웨어를 사용하면 되지만, 현재 우리는 더욱 똑똑한 오픈 소스가 있습니다.
 장고의 주된 목표는 **고도의 데이터베이스 기반 웹사이트 작성에 있어서 수고를 더는 것** 입니다.
 ***
 ## 목 차
@@ -18,18 +18,24 @@ Django는 파이썬으로 작성된 **오픈소스 웹 어플리케이션 프레
 3. 데이터베이스 설정
 
 4. 모델 만들기
+
+5. 관리자 생성하기
+
+6. 뷰 추가하기
+
+7. template 사용하기
 ***
-## 1. 시작하기에 앞서...
-Django는 **파이썬**으로 사용되는 오픈소스입니다.  
+## **1. 시작하기에 앞서...**
+Django는 **파이썬**으로 사용되는 오픈소스입니다.
 따라서 여러분들이 이 메뉴얼을 보고 학습을 하기전에 파이썬에 대한 지식을 모르시는 분들은 공부를 하고 읽으시면 이해하시는데 훨씬 수월할 것 입니다.
 ***
-## 2. Django 시작하기
-Django project 를 구성하는 코드를 자동 생성해야 하는데, 이 과정에서 데이터베이스 설정, Django 위한 옵션들, 어플리케이션을 위한 설정들과 같은 Django 인스턴스를 구성하는 수많은 설정들이 생성되기 때문입니다.  
+## **2. Django 시작하기**
+Django project 를 구성하는 코드를 자동 생성해야 하는데, 이 과정에서 데이터베이스 설정, Django 위한 옵션들, 어플리케이션을 위한 설정들과 같은 Django 인스턴스를 구성하는 수많은 설정들이 생성되기 때문입니다.
 우선 커맨드라인에서 코드를 저장할 디렉토리로 이동한 후 다음 명령어를 실행합니다.
 ~~~~
 django-admin startproject mysite
 ~~~~
-Python 이나 Django 에서 사용중인 이름은 피해야 합니다.  
+Python 이나 Django 에서 사용중인 이름은 피해야 합니다.
 특히, django (Django 그 자체와 충돌이 일어남, 대소문자를 구별하지 않음) 나, test (Python 패키지의 이름중 하나) 같은 이름은 피해야 한다는 의미입니다.
 
 ***
@@ -37,11 +43,11 @@ Python 이나 Django 에서 사용중인 이름은 피해야 합니다.
 ~~~~
 mysite/
 manage.py
-    mysite/
-        __init__.py
-        settings.py
-        urls.py
-        wsgi.py
+mysite/
+__init__.py
+settings.py
+urls.py
+wsgi.py
 ~~~~
 
 * mysite/ 디렉토리 바깥의 디렉토리는 단순히 프로젝트를 담는 공간입니다. 이 이름은 Django 와 아무 상관이 없으니, 원하는 이름으로 변경하셔도 됩니다.
@@ -59,7 +65,7 @@ manage.py
 * mysite/```wsgi.py```: 현재 project 를 서비스 하기 위한 WSGI 호환 웹 서버의 진입점 입니다.
 
 ---
-Django project 가 제대로 동작하는지 확인해 봅시다.  
+Django project 가 제대로 동작하는지 확인해 봅시다.
 mysite 디렉토리로 이동하고, 다음 명령어를 실행하세요.
 ~~~~
 $ python manage.py runserver
@@ -87,20 +93,20 @@ Quit the server with CONTROL-C.
 ~~~~
 $ python manage.py runserver 8080
 ~~~~
-그리고 만약 서버 IP를 바꾸고 싶다면, 포트와 함께 전달해주면 됩니다.  
+그리고 만약 서버 IP를 바꾸고 싶다면, 포트와 함께 전달해주면 됩니다.
 네트워크 상의 다른 컴퓨터에게 내 작업물을 보여 줄때 유용합니다. 다음 명령어를 입력해 보세요.
 ~~~~
 $ python manage.py runserver 0.0.0.0:8000
 ~~~~
-이제 작업을 시작하기 위한 환경(project)이 설치되었습니다.  
+이제 작업을 시작하기 위한 환경(project)이 설치되었습니다.
 Django는 app의 기본 디렉토리 구조를 자동으로 생성할수 있는 도구를 제공합니다.
 
-그렇다면 project와 app의 차이가 무엇일까요?  
-**app**은 특정한 기능을 수행하는 웹 어플리케이션을 말합니다.  
-**proejct**는 이런 특정 웹사이트를 위한 app들과 설정들을 합한것입니다.  
+그렇다면 project와 app의 차이가 무엇일까요?
+**app**은 특정한 기능을 수행하는 웹 어플리케이션을 말합니다.
+**proejct**는 이런 특정 웹사이트를 위한 app들과 설정들을 합한것입니다.
 다시 말하면 project는 여러 개의 app을 포함 할수 있습니다.
 
-그렇다면 이제 app을 생성해 봅시다. 간단한 설문조사 app을 만들어 봅시다. app을 생성하기 위해서는 ```manage.py```가 존재하는 디렉토리에서 다음 명령어를 입력합니다. 
+그렇다면 이제 app을 생성해 봅시다. 간단한 설문조사 app을 만들어 봅시다. app을 생성하기 위해서는 ```manage.py```가 존재하는 디렉토리에서 다음 명령어를 입력합니다.
 ~~~~
 $ python manage.py startapp polls
 ~~~~
@@ -110,14 +116,14 @@ polls라는 디렉토리가 생겼습니다.
 
 ~~~~
 polls/
-    __init__.py
-    admin.py
-    apps.py
-    migrations/
-        __init__.py
-    models.py
-    tests.py
-    views.py
+__init__.py
+admin.py
+apps.py
+migrations/
+__init__.py
+models.py
+tests.py
+views.py
 ~~~~
 첫 번째 뷰를 작성해볼까요.
 
@@ -130,10 +136,10 @@ from django.http import HttpResponse
 
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+return HttpResponse("Hello, world. You're at the polls index.")
 ~~~~
 
-Django에서 *가장 간단한 형태의 view*입니다. view를 호출하려면 이와 연결된 URL이 있어야 하는데, 이를 URLconf가 사용되는데 polls 디렉토리에서 URLconf를 생성하려면, ```urls.py```라는 파일을 생성해야 합니다. 
+Django에서 *가장 간단한 형태의 view*입니다. view를 호출하려면 이와 연결된 URL이 있어야 하는데, 이를 URLconf가 사용되는데 polls 디렉토리에서 URLconf를 생성하려면, ```urls.py```라는 파일을 생성해야 합니다.
 
 **경로 : polls/urls.py**
 
@@ -143,12 +149,12 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
+url(r'^$', views.index, name='index'),
 ]
 ~~~~
 
-다음단계에서는 project 최상단의 URLconf에서 polls.urls 모듈을 바라보게 설정합니다.  
-mysite/urls.py 파일을 열고 django.conf.urls.include 를 추가한 뒤, 다음과 같이 코드를 추가해주세요. 
+다음단계에서는 project 최상단의 URLconf에서 polls.urls 모듈을 바라보게 설정합니다.
+mysite/urls.py 파일을 열고 django.conf.urls.include 를 추가한 뒤, 다음과 같이 코드를 추가해주세요.
 
 **경로 : mysite/urls.py**
 
@@ -157,17 +163,17 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^polls/', include('polls.urls')),
-    url(r'^admin/', admin.site.urls),
+url(r'^polls/', include('polls.urls')),
+url(r'^admin/', admin.site.urls),
 ]
 ~~~~
 
-include() 함수는 URLconf를 참조할 수 있도록 도와줍니다.  
+include() 함수는 URLconf를 참조할 수 있도록 도와줍니다.
 위의 코드는 쉽게 말하면 project안에 app의 urls.py에 접근할 수 있도록 도와주는 역할을 합니다.
 
 ***
-## 3. 데이터베이스 설정
-데이터베이스를 설정해봅시다. 
+## **3. 데이터베이스 설정**
+데이터베이스를 설정해봅시다.
 Django의 기본적인 SQLite로 사용하도록 구성되어 있습니다. 데이터베이스를 처음 경험한다면 그냥 그대로 사용하시고 나는 다른 데이터베이스를 사용하고 싶으시다면 별도로 DBMS를 설치하시고 아래와 같이 코드를 작성해주시면 됩니다.
 
 ~~~~
@@ -182,10 +188,10 @@ Django의 기본적인 SQLite로 사용하도록 구성되어 있습니다. 데�
 기본 코드
 ~~~~
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+'default': {
+'ENGINE': 'django.db.backends.sqlite3',
+'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+}
 }
 
 ~~~~
@@ -194,14 +200,14 @@ DBMS를 PostgreSQL로 바꾸고 싶다면 아래와 같이 코드를 작성해�
 
 ~~~~
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': '데이터베이스의 이름',
-        'USER': '데이터베이스 계정',
-        'PASSWORD': '계정 비밀번호',
-        'HOST': '127.0.0.1',
-        'PORT': '',
-    }
+'default': {
+'ENGINE': 'django.db.backends.postgresql',
+'NAME': '데이터베이스의 이름',
+'USER': '데이터베이스 계정',
+'PASSWORD': '계정 비밀번호',
+'HOST': '127.0.0.1',
+'PORT': '',
+}
 }
 ~~~~
 
@@ -218,23 +224,23 @@ INSTALLED_APPS = [
 ]
 ~~~~
 
-위의 기본적으로 지원해주는 app들은 기본적으로 하나 이상의 데이터베이스 테이블을 사용합니다.  
+위의 기본적으로 지원해주는 app들은 기본적으로 하나 이상의 데이터베이스 테이블을 사용합니다.
 그래서 테이블을 미리 만들어 주어야 합니다.
 ~~~~
 $ python manage.py migrate
 ~~~~
-migrate 명령은 INSTALLED_APPS의 설정을 탐색하여, DBMS 설정과 app에 사용되는 데이터베이스 테이블을 생성합니다.  
+migrate 명령은 INSTALLED_APPS의 설정을 탐색하여, DBMS 설정과 app에 사용되는 데이터베이스 테이블을 생성합니다.
 어떤 내용이 생성됬는지 확인하고 싶다면 데이터 베이스 클라이언트로 접속하여 확인 할 수 있습니다.
 
-만약 기본적으로 제공되는 app들 중 사용하기 싫은 app이 있으시다면 주석처리 해주시거나 삭제하시고,  
+만약 기본적으로 제공되는 app들 중 사용하기 싫은 app이 있으시다면 주석처리 해주시거나 삭제하시고,
 migrate명령을 해주시면 삭제된 app을 제외하고 migrate명령이 실행 될 겁니다.
 
 ***
-## 4. 모델 만들기
+## **4. 모델 만들기**
 이제 모델을 만들어 봅시다. Django는 모델을 한곳에서 관리할 수 있도록 지원해줍니다.
 
-단순한 설문조사(poll) 앱만든다 하고, Question 과 Choice 라는 두개의 모델을 만들어 보겠습니다.  
-Question 은 질문(question) 과 발행일(publication date) 을 위한 두개의 필드를 가집니다.  
+단순한 설문조사(poll) 앱만든다 하고, Question 과 Choice 라는 두개의 모델을 만들어 보겠습니다.
+Question 은 질문(question) 과 발행일(publication date) 을 위한 두개의 필드를 가집니다.
 Choice 는 선택지(choice) 와 표(vote) 계산을 위한 두개의 필드를 가지고 각 Choice 모델은 Question 모델과 연관(associated) 됩니다.
 
 **경로 : polls/models.py**
@@ -253,20 +259,22 @@ choice_text = models.CharField(max_length=200)
 votes = models.IntegerField(default=0)
 ~~~~
 
-각 모델은 django.db.models.Model 이라는 클래스의 서브클래스로 표현됩니다.  
+각 모델은 django.db.models.Model 이라는 클래스의 서브클래스로 표현됩니다.
 각 모델은 여러 개의 클래스 변수를 가지고 있으면, 각각의 클래스 변수들은 모델의 데이터베이스 필드를 나타냅니다.
 
-데이터베이스의 필드들은 Field 클래스의 인스턴스로 표현됩니다.  
-각 옵션들을 부여 할수 있는데 이것을 이용하여 최대길이(max_length) 지정,  default로 기본값 지정, 첫번째 인수를 전달하여 사람이 이해하기 쉬운 이름을 지정 할수도 있습니다.  
+데이터베이스의 필드들은 Field 클래스의 인스턴스로 표현됩니다.
+각 옵션들을 부여 할수 있는데 이것을 이용하여 최대길이(max_length) 지정,  default로 기본값 지정, 첫번째 인수를 전달하여 사람이 이해하기 쉬운 이름을 지정 할수도 있습니다.
 
 ---
-ForeignKey 를 사용한 관계설정에 대해 설명하겠습니다. 이 예제에서는 각각의 Choice 가 하나의 Question 에 관계된다는 것을 Django 에게 알려줍니다. Django 는 다-대-일(many-to-one), 다-대-다(many-to-many), 일-대-일(one-to-one) 과 같은 모든 일반 데이터베이스의 관계들를 지원합니다.
+
+ForeignKey 를 사용한 관계설정에 대해 설명하겠습니다.
+이 예제에서는 각각의 Choice 가 하나의 Question 에 관계된다는 것을 Django 에게 알려줍니다. Django 는 다-대-일(many-to-one), 다-대-다(many-to-many), 일-대-일(one-to-one) 과 같은 모든 일반 데이터베이스의 관계들를 지원합니다.
 그리고 이 필드의 이름들은 데이터 베이스에서 속성명으로 사용됩니다.
 
-CharField : 문자 필드
-DateTimeField : 날짜시간 필드
+* CharField : 문자 필드
+* DateTimeField : 날짜시간 필드
 
-app 을 현재의 project 에 포함시키기 위해서는, app 의 구성 클래스에 대한 참조를 INSTALLED_APPS 설정에 추가시켜야 합니다. 다음과 같이 코드를 작성해 주세요
+app 을 현재의 project 에 포함시키기 위해서는, app 의 구성 클래스에 대한 참조를 INSTALLED_APPS 설정에 추가시켜야 하므로 다음과 같이 코드를 작성해 주세요.
 
 **경로 : mysite/settings.py**
 
@@ -283,7 +291,7 @@ INSTALLED_APPS = [
 
 그후 다음 명령어를 실행해 주세요
 ~~~~
-"python manage.py makemigrations polls"
+$ python manage.py makemigrations polls
 ~~~~
 
 그러면 명령창에 이렇게 띄워질 것입니다.
@@ -296,49 +304,51 @@ polls/migrations/0001_initial.py:
 - Add field question to choice
 ~~~~
 
-makemigrations 을 실행시킴으로서, 당신이 모델을 변경시킨 사실과(이 경우에는 새로운 모델을 만들었습니다) 이 변경사항을 migration 으로 저장시키고 싶다는 것을 Django 에게 알려줍니다. migrations는 Django가 모델의 변경사항을 저장하는 방법으로 파일로 존재합니다.
-polls/migrations/0001_initial.py 파일을 보면 새롭게 저장된 모델에 대한 migrations를 볼수 있습니다. 파일로 볼수 있고 명령어를 치지 않고 그냥 그 파일에서 수동으로 수정할 수도 있습니다.
+makemigrations 을 실행시킴으로서, 당신이 모델을 변경시킨 사실과(이 경우에는 새로운 모델을 만들었음) 이 변경사항을 migration 으로 저장시키고 싶다는 것을 Django 에게 알려줍니다.
+migrations는 Django가 모델의 변경사항을 저장하는 방법으로 파일로 존재합니다.
+polls/migrations/0001_initial.py 파일을 보면 새롭게 저장된 모델에 대한 migrations를 볼 수 있습니다. 파일로 볼 수 있고 명령어를 치지 않고 그냥 그 파일에서 수동으로 수정할 수도 있습니다.
 
-***
+
 이제 다음 명령으로 데이터베이스에 모델과 관련된 테이블을 생성해봅시다.
 ~~~~
-python manage.py migrate
+$ python manage.py migrate
 ~~~~
 migrate는 아직 적용되지 않은 migration들을 실행합니다. migration은 매우 기능이 강력하여 project를 개발할때 직접 데이터베이스에 손대지 않고도 모델을 변경하게 해줍니다.
 
 ***
 
-## 관리자 생성하기
+## **5. 관리자 생성하기**
 
 기본적으로 Django에서는 관리자 사이트를 활성화 되어있습니다.
 그러므로 일단 관리자 사이트를 사용할 수 있는 사용자를 생성해 봅시다. 다음 명령어를 실행 합니다.
 ~~~~
-python manage.py createsuperuser
+$ python manage.py createsuperuser
 ~~~~
 
 ~~~~
 Username: "유저 ID"
-Email address: "Email 주소""
+Email address: "Email 주소"
 Password: "비밀번호"
 ~~~~
 
-명령창위에서 이것을 작성해 줍니다. 그리고 서버를 켜기 위해 다음 명령을 실행합니다.
+커맨드 창 위에서 위와 같이 작성해 줍니다.
+그리고 서버를 켜기 위해 다음 명령을 실행합니다.
 ~~~~
-python manage.py runserver
+$python manage.py runserver
 ~~~~
-그리고 웹 브라우져 주소창에  http://127.0.0.1:8000/admin/ 또는 localhost:8000/으로 들어갑니다. 
+그리고 웹 브라우져 주소창에  http://127.0.0.1:8000/admin/ 또는 localhost:8000/(포트를 변경 했다면 변경한 포트 입력)으로 들어갑니다.
 
 그러면 로그인 화면이 보입니다.
 
 <img src="https://django-document-korean.readthedocs.io/ko/master/_images/admin01.png" align=middle>
 
-위에서 생성한 계정으로 로그인 해서 들어가게 되면 다음 화면이 보일것입니다.
+위에서 생성한 계정으로 로그인 해서 들어가게 되면 다음 화면이 보일 것입니다.
 
 <img src="https://django-document-korean.readthedocs.io/ko/master/_images/admin02.png" align=middle>
 
 
 polls app 관리자 페이지에 보이지 않네요.
- 새로 생성한 app을 관리자 페이지에서 보려면 다음 코드를 작성하세요.
+새로 생성한 app을 관리자 페이지에서 보려면 다음 코드를 작성하세요.
 
 **경로 : polls/admin.py**
 
@@ -354,18 +364,24 @@ admin.site.register(Question)
 
 <img src="https://django-document-korean.readthedocs.io/ko/master/_images/admin03t.png" align=middle>
 
-polls 어플리케이션에 관리자자가 공개인터페이스인 view를 추가해보겠습니다.
+
+***
+## **6. 뷰 추가하기**
+polls 어플리케이션에 관리자가 공개인터페이스인 view를 추가해보겠습니다.
 
 view는 Django 어플리케이션이 일반적으로 특정 기능과 템플릿을 제공하는 웹페이지의 한 종류입니다.
 
 우리가 만드는 poll 어플리케이션에서 다음과 같은 네 개의 view를 만들어 보겠습니다.
 
-최근의 질문들을 표시하는 페이지
-질문 내용과, 투표할 수 있는 서식을 표시하는 페이지
-특정 질문에 대한 결과를 표시하는 페이지
-특정 질문에 대해 특정 선택을 할 수 있는 투표 기능을 제공하는 페이지
+* 최근의 질문들을 표시하는 페이지
 
-Django에서는, 웹페이지와 기타 내용들이 view에 의해 제공됩니다. 각 view는 간단한 Python함수를 사용하여 작성됩니다. Django는 요청받은 URL에 따라 view를 선택합니다.
+* 질문 내용과, 투표할 수 있는 서식을 표시하는 페이지
+* 특정 질문에 대한 결과를 표시하는 페이지
+* 특정 질문에 대해 특정 선택을 할 수 있는 투표 기능을 제공하는 페이지
+
+Django에서는, 웹페이지와 기타 내용들이 view에 의해 제공됩니다.
+각 view는 간단한 Python함수를 사용하여 작성됩니다.
+Django는 요청받은 URL에 따라 view를 선택합니다.
 ***
 그럼 view를 작성해봅시다.
 
@@ -383,13 +399,12 @@ def vote(request, question_id):
 return HttpResponse("You're voting on question %s." % question_id)
 ~~~~
 
-urls.py 에 새로 작성된 view들을 연결하기 위해 다음과 같이 url()함수를 추가합니다.
+```urls.py``` 에 새로 작성된 view들을 연결하기 위해 다음과 같이 url()함수를 추가합니다.
 
 **경로 : polls/urls.py**
 
-from django.conf.urls import url
-
 ~~~~
+from django.conf.urls import url
 from . import views
 
 urlpatterns = [
@@ -406,7 +421,8 @@ url(r'^(?P<question_id>[0-9]+)/vote/$', views.vote, name='vote'),
 
 이제 웹 브라우저 주소창에 localhost:8000/polls/34를 입력하게 되면 detail()함수를 호출하여 url에 입력된 ID(34)를 출력할 것입니다.
 
-view 는 HttpResponse 객체를 반환하거나 Http404같은 에러를 발생시킵니다. 또 데이터베이스의 레코드를 읽어 올수도 있습니다. 이번에는 데이터베이스를 다루는 방법을 해봅시다. 아래와 같이 코드를 작성해 주세요
+view 는 HttpResponse 객체를 반환하거나 Http404같은 에러를 발생시킵니다. 또 데이터베이스의 레코드를 읽어 올수도 있습니다. 이번에는 데이터베이스를 다루는 방법을 해봅시다.
+아래와 같이 코드를 작성해 주세요.
 
 **경로 : polls/views.py**
 
@@ -417,27 +433,31 @@ from .models import Question
 
 
 def index(request):
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
-    output = ', '.join([q.question_text for q in latest_question_list])
-    return HttpResponse(output)
+latest_question_list = Question.objects.order_by('-pub_date')[:5]
+output = ', '.join([q.question_text for q in latest_question_list])
+return HttpResponse(output)
 ~~~~
 
-그런데 이 뷰에는 문제가 있습니다. 바로 디자인에 되어있지 않다는 점입니다. 페이지를 디자인하고 싶다면  Python코드로부터 디자인을 독립시키도록 하는 Django의 템플릿 시스템을 사용할 것입니다. 
+그런데 이 뷰에는 문제가 있습니다. 바로 **디자인에 되어있지 않다는 점**입니다.
+페이지를 디자인하고 싶다면  Python코드로부터 디자인을 독립시키도록 하는 Django의 템플릿 시스템을 사용할 것입니다.
 
-일단 polls 디렉토리에 templates 라는 디렉토리를 만듭니다. Django는 이 디렉토리 안에서 템플릿을 찾게 될 것입니다. project의 템플릿 설정에는 Django가 어떻게 템플릿을 불러오고 렌더링 할 것인지 를 서술합니다. 기본적으로 Django는 templates 디렉토리를 탐색하게 됩니다.
+일단 polls 디렉토리에 templates 라는 디렉토리를 만듭니다.
+Django는 이 디렉토리 안에서 템플릿을 찾게 될 것입니다.
+project의 템플릿 설정에는 Django가 어떻게 템플릿을 불러오고 렌더링 할 것인지 를 서술합니다.
+기본적으로 Django는 templates 디렉토리를 탐색하게 됩니다.
 templates 디렉토리 안에 app과 이름이 같은 디렉토리를 만들어 봅시다. 그리고 그안에 html파일을 만들어 아래 코드를 작성합니다.
 
 **경로 : polls/templates/polls/index.html**
 
 ~~~~
 {% if latest_question_list %}
-    <ul>
-    {% for question in latest_question_list %}
-        <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
-    {% endfor %}
-    </ul>
+<ul>
+{% for question in latest_question_list %}
+<li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
+{% endfor %}
+</ul>
 {% else %}
-    <p>No polls are available.</p>
+<p>No polls are available.</p>
 {% endif %}
 ~~~~
 
@@ -483,8 +503,9 @@ return render(request, 'polls/index.html', context)
 
 모든 뷰에서 이 방식을 사용한다면 굳이 loader 와 HttpResponse 를 import 하지 않아도 됩니다.
 render() 함수는 첫번째 인수에서 request 객체를 받고 두번째 인수로 template의 이름을 받고 세번째 인수로 context 객체를 선택적으로 인수를 받습니다. context는 템플릿에 HttpResponse 객체로 넘어갑니다.
+***
 
-## template 사용하기
+## **7. template 사용하기**
 
 위의 코드에서 detail()함수로 넘긴 context 변수 question이 polls/detail.html에서 어떻게 보여지는지 아래 코드롤 작성해봅시다.
 
@@ -494,12 +515,12 @@ render() 함수는 첫번째 인수에서 request 객체를 받고 두번째 인
 <h1>{{ question.question_text }}</h1>
 <ul>
 {% for choice in question.choice_set.all %}
-    <li>{{ choice.choice_text }}</li>
+<li>{{ choice.choice_text }}</li>
 {% endfor %}
 </ul>
 ~~~~
 
-template 시스템은 변수의 속성에 접근하기 위해 점-탐색(dot-lookup) 문법을 사용합니다. 
+template 시스템은 변수의 속성에 접근하기 위해 점-탐색(dot-lookup) 문법을 사용합니다.
 {{ question.question_text }}을 보면, Django는 먼저 questions 객체에 대해 dictionary로 탐색한 후 실패를 하면 속성 값을 탐색하게 됩니다. {% for %} 문에서 메소드 호출이 일어나고 Python코드가 동작합니다.
 
 ## template에서 하드코딩된 URL 제거하기
@@ -509,7 +530,7 @@ polls/index.html template에 링크를 적으면, 다음과 같은 하드코딩�
 <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
 ~~~~
 
-이러한 방법은 수많은 template 을 가진 project의 URL을 바꾸는게 어려운 일이 되버립니다. 
+이러한 방법은 수많은 template 을 가진 project의 URL을 바꾸는게 어려운 일이 되버립니다.
 그러므로 우리는 polls.urls 모듈의 url()함수를 통하여 이름을 정의했습니다.
 그것을 이용하여 다시 코드를 작성해봅시다.
 
@@ -593,36 +614,36 @@ from .models import Choice, Question
 # ...
 
 def vote(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    try:
-        selected_choice = question.choice_set.get(pk=request.POST['choice'])
-    except (KeyError, Choice.DoesNotExist):
-        return render(request, 'polls/detail.html', {
-            'question': question,
-            'error_message': "You didn't select a choice.",
-        })
-    else:
-        selected_choice.votes += 1
-        selected_choice.save()
-        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+question = get_object_or_404(Question, pk=question_id)
+try:
+selected_choice = question.choice_set.get(pk=request.POST['choice'])
+except (KeyError, Choice.DoesNotExist):
+return render(request, 'polls/detail.html', {
+'question': question,
+'error_message': "You didn't select a choice.",
+})
+else:
+selected_choice.votes += 1
+selected_choice.save()
+return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 ~~~~
 
-request.POST 는 키로 전송된 자료에 접근할 수 있도록 해주는 사전과 같은 객체입니다. 
+request.POST 는 키로 전송된 자료에 접근할 수 있도록 해주는 사전과 같은 객체입니다.
 이 경우, request.POST['choice'] 는 선택된 설문의 ID가 "choice"인 값을 문자열로 반환합니다. request.POST 의 값은 항상 문자열들입니다.
 
 설문지의 수가 증가한 이후에, 코드는 일반 HttpResponse 가 아닌 HttpResponseRedirect 를 반환하고, HttpResponseRedirect 는 하나의 인수를 받습니다: 그 인수는 사용자가 재전송될 URL 입니다. (이 경우에 우리가 URL을 어떻게 구성하는지 다음 항목을 보세요).
 
 위의 파이썬 주석이 지적했듯이, POST 데이터를 성공적으로 처리 한 후에는 항상 HttpResponseRedirect 를 반환해야합니다. 이 팁은 Django에만 국한되는것이 아닌 웹개발의 권장사항입니다.
 
-vote() 뷰는 results 페이지를 리다이렉트합니다. 그 뷰를 작성해봅시다. 
+vote() 뷰는 results 페이지를 리다이렉트합니다. 그 뷰를 작성해봅시다.
 
 **경로 : polls/views.py**
 ~~~~
 from django.shortcuts import get_object_or_404, render
 
 def results(request, question_id):
-    question = Question.obejcts.get(pk=question_id)
-    return render(request, 'polls/results.html', {'question': question})
+question = Question.obejcts.get(pk=question_id)
+return render(request, 'polls/results.html', {'question': question})
 ~~~~
 
 이제 이걸을 출력할 template를 만듭니다.
@@ -634,7 +655,7 @@ def results(request, question_id):
 
 <ul>
 {% for choice in question.choice_set.all %}
-    <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+<li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
 {% endfor %}
 </ul>
 
@@ -650,7 +671,7 @@ def results(request, question_id):
 이러한 뷰는 URL에서 전달 된 매개 변수에 따라 데이터베이스에서 데이터를 가져 오는 것과 템플릿을 로드하고 렌더링 된 템플릿을 리턴하는 기본 웹 개발의 일반적인 경우를 나타냅니다. Django는 이런 매우 일반적인 경우를 위해 “제너릭 뷰”시스템이라는 지름길을 제공합니다.
 
 제내릭 뷰는 일반적으로 나오는 패턴을 추상화하여 앱을 작성하기 위해 중복된 코드를 작성하지 않아도 됩니다.
-우리는 설문조사 app을 제네릭 뷰 시스템을 사용하도록 코드를 수정할 것입니다. 그러기 위해선 몇 단계의 과정을 거쳐야 합니다. 
+우리는 설문조사 app을 제네릭 뷰 시스템을 사용하도록 코드를 수정할 것입니다. 그러기 위해선 몇 단계의 과정을 거쳐야 합니다.
 
 1. URLconf를 변환하십시오.
 
@@ -669,10 +690,10 @@ from . import views
 
 app_name = 'polls'
 urlpatterns = [
-    url(r'^$', views.IndexView.as_view(), name='index'),
-    url(r'^(?P<pk>[0-9]+)/$', views.DetailView.as_view(), name='detail'),
-    url(r'^(?P<pk>[0-9]+)/results/$', views.ResultsView.as_view(), name='results'),
-    url(r'^(?P<question_id>[0-9]+)/vote/$', views.vote, name='vote'),
+url(r'^$', views.IndexView.as_view(), name='index'),
+url(r'^(?P<pk>[0-9]+)/$', views.DetailView.as_view(), name='detail'),
+url(r'^(?P<pk>[0-9]+)/results/$', views.ResultsView.as_view(), name='results'),
+url(r'^(?P<question_id>[0-9]+)/vote/$', views.vote, name='vote'),
 ]
 ~~~~
 
@@ -693,26 +714,26 @@ from .models import Choice, Question
 
 
 class IndexView(generic.ListView):
-    template_name = 'polls/index.html'
-    context_object_name = 'latest_question_list'
+template_name = 'polls/index.html'
+context_object_name = 'latest_question_list'
 
-    def get_queryset(self):
-        """Return the last five published questions."""
-        return Question.objects.order_by('-pub_date')[:5]
+def get_queryset(self):
+"""Return the last five published questions."""
+return Question.objects.order_by('-pub_date')[:5]
 
 
 class DetailView(generic.DetailView):
-    model = Question
-    template_name = 'polls/detail.html'
+model = Question
+template_name = 'polls/detail.html'
 
 
 class ResultsView(generic.DetailView):
-    model = Question
-    template_name = 'polls/results.html'
+model = Question
+template_name = 'polls/results.html'
 
 
 def vote(request, question_id):
-    ... # 변경할 필요 없습니다.
+... # 변경할 필요 없습니다.
 
 ~~~~
 
@@ -722,5 +743,6 @@ DetailView 제너릭 뷰는 URL에서 캡쳐 된 기본 키 값이”pk”\ 라�
 
 마찬가지로, ListView 제네릭 뷰는 <app name>/<model name>_list.html 템플릿을 기본으로 사용합니다; 이미 있는 **polls/index.html** 템플릿을 사용하기 위해 ListView 에 template_name 를 전달했습니다.
 
-코드 수정 전 템플릿에서는  question 및 latest_question_list context 변수가 포함된 context가 값으로 넘겨와 사용되었지만 DetailView의 경우 question 변수가 자동으로 값으로 넘어옵니다. Django 모델을 사용하기 때문에 Django는 context의 이름을 결정할 수 있습니다. 
+코드 수정 전 템플릿에서는  question 및 latest_question_list context 변수가 포함된 context가 값으로 넘겨와 사용되었지만 DetailView의 경우 question 변수가 자동으로 값으로 넘어옵니다. Django 모델을 사용하기 때문에 Django는 context의 이름을 결정할 수 있습니다.
 ListView의 경우 자동 생성 된 컨텍스트 변수는 question_list 입니다. 이것을 바꿔서 사용하려면 context_object_name 속성을 제공하고, 대신에 latest_question_list를 사용하도록 지정하십시오.
+
